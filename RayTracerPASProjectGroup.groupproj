@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6DC5BCB2-D12F-49FB-8F1B-8E038E8F6099}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="src\RayTracer.PAS.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="RayTracer_PAS">
+        <MSBuild Projects="src\RayTracer.PAS.dproj"/>
+    </Target>
+    <Target Name="RayTracer_PAS:Clean">
+        <MSBuild Projects="src\RayTracer.PAS.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="RayTracer_PAS:Make">
+        <MSBuild Projects="src\RayTracer.PAS.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="RayTracer_PAS"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="RayTracer_PAS:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="RayTracer_PAS:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
