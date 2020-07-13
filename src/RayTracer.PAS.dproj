@@ -102,6 +102,9 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="Geometry_Types.pas"/>
+        <DCCReference Include="Geometry_Methods.pas"/>
+        <DCCReference Include="Utils_Types.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

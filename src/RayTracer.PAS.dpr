@@ -5,7 +5,10 @@ program RayTracer.PAS;
 {$R *.res}
 
 uses
-  System.SysUtils;
+  System.SysUtils,
+  Geometry_Types in 'Geometry_Types.pas',
+  Geometry_Methods in 'Geometry_Methods.pas',
+  Utils_Types in 'Utils_Types.pas';
 
 begin
   try
