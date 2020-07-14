@@ -14,6 +14,7 @@ type
     fCamera: TCamera;
 
     procedure InitData();
+    procedure ClearLists();
 
   public
     constructor Create();
@@ -36,7 +37,7 @@ end;
 
 destructor TMyScene.Destroy();
 begin
-
+  ClearLists();
 end;
 
 function TMyScene.GetThings(): TList<TThing>;
@@ -66,6 +67,19 @@ begin
   fLights.Add(TLigth.Create(TVec3.Create(1.5, 2.5, 1.5), TColor.Create(0.07, 0.07, 0.49)));
   fLights.Add(TLigth.Create(TVec3.Create(1.5, 2.5, -1.5), TColor.Create(0.07, 0.49, 0.071)));
   fLights.Add(TLigth.Create(TVec3.Create(0.0, 3.5, 0.0), TColor.Create(0.21, 0.21, 0.35)));
+end;
+
+procedure TMyScene.ClearLists();
+var
+  lIndex: Integer;
+
+begin
+  for lIndex := 0 to fThings.Count - 1 do
+  begin
+    fThings[lIndex].Free;
+  end;
+  fThings.Clear;
+  fLights.Clear;
 end;
 
 end.

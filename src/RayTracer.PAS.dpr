@@ -5,6 +5,9 @@ program RayTracer.PAS;
 {$R *.res}
 
 uses
+  {$IFNDEF DEBUG}
+  FastMM4,
+  {$ENDIF}
   Windows,
   Vcl.Graphics,
   System.SysUtils,
