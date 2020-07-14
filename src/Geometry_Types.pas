@@ -147,7 +147,7 @@ type
   end;
 
   TThing = class abstract
-    function Intersect(const lRay: TRay; const lScene: IScene) : TOptional<TIntersection>; virtual; abstract;
+    function Intersect(const lRay: TRay) : TOptional<TIntersection>; virtual; abstract;
     function Normal(const lPos: TVec3): TVec3; virtual; abstract;
     function Surface(): ISurface; virtual; abstract;
   end;
@@ -167,6 +167,33 @@ type
     function GetPixels(): TArrayOfByte;
   end;
 
+  TPlane = class(TThing)
+  strict private
+    fNorm: TVec3;
+    fOffset: TReal;
+    fSurface: ISurface;
+
+  public
+    constructor Create(const lNorm: TVec3; lOffset: TReal; lSurface: ISurface);
+
+    function Intersect(const lRay: TRay): TOptional<TIntersection>; override;
+    function Normal(const lPos: TVec3): TVec3;  override;
+    function Surface(): ISurface;  override;
+  end;
+
+  TSphere = class(TThing)
+  strict private
+    fCentre: TVec3;
+    fRadius: TReal;
+    fSurface: ISurface;
+
+  public
+    constructor Create(const lCentre: TVec3; lRadius: TReal; lSurface: ISurface);
+
+    function Intersect(const lRay: TRay): TOptional<TIntersection>; override;
+    function Normal(const lPos: TVec3): TVec3;  override;
+    function Surface(): ISurface;  override;
+  end;
 
 implementation
 
@@ -351,6 +378,91 @@ end;
 function TDynamicCanvas.GetPixels(): TArrayOfByte;
 begin
   Result := fBuffer;
+end;
+
+{ TPlane }
+
+constructor TPlane.Create(const lNorm: TVec3; lOffset: TReal; lSurface: ISurface);
+begin
+  fNorm := lNorm;
+  fOffset := lOffset;
+  fSurface := lSurface;
+end;
+
+function TPlane.Intersect(const lRay: TRay): TOptional<TIntersection>;
+var
+  lDenom: TReal;
+  lDist: TReal;
+
+begin
+  lDenom := Dot(fNorm, lRay.Dir);
+  if (lDenom > 0.0) then
+  begin
+    Exit;
+  end;
+
+  lDist := (Dot(fNorm, lRay.Start) + fOffset) / (-lDenom);
+  Result := TOptional<TIntersection>.Create(
+    TIntersection.Create(Self, lRay, lDist)
+  );
+end;
+
+function TPlane.Normal(const lPos: TVec3): TVec3;
+begin
+  Result := fNorm;
+end;
+
+function TPlane.Surface(): ISurface;
+begin
+  Result := fSurface;
+end;
+
+{ TPlane }
+
+constructor TSphere.Create(const lCentre: TVec3; lRadius: TReal; lSurface: ISurface);
+begin
+  fCentre := lCentre;
+  fRadius := lRadius;
+  fSurface := lSurface;
+end;
+
+function TSphere.Intersect(const lRay: TRay): TOptional<TIntersection>;
+var
+  lEo: TVec3;
+  lV: TReal;
+  lDist,
+  lDisc: TReal;
+
+begin
+  lEo := fCentre - lRay.Start;
+  lV := Dot(lEo, lRay.Dir);
+  lDist := 0.0;
+
+  if (lV >= 0.0) then
+  begin
+    lDisc := fRadius - (Dot(lEo, lEo) - lV * lV);
+    if (lDisc >= 0.0) then
+    begin
+      lDist := lV - Sqrt(lDisc);
+    end;
+  end;
+
+  if (lDist <> 0) then
+  begin
+    Result := TOptional<TIntersection>.Create(
+      TIntersection.Create(Self, lRay, lDist)
+    );
+  end;
+end;
+
+function TSphere.Normal(const lPos: TVec3): TVec3;
+begin
+  Result := Norm(lPos - fCentre);
+end;
+
+function TSphere.Surface(): ISurface;
+begin
+  Result := fSurface;
 end;
 
 end.

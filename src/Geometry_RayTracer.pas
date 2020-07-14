@@ -108,7 +108,7 @@ begin
   for lThingIndex := 0 to lThings.Count - 1 do
   begin
     lThing := lThings.Items[lThingIndex];
-    lInter := lThing.Intersect(lRay, lScene);
+    lInter := lThing.Intersect(lRay);
     if ((lInter.HasValue) AND (lInter.Value.Dist < lClosestDist)) then
     begin
       lClosestDist := lInter.Value.Dist;
