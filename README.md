@@ -1,4 +1,4 @@
-# Ray Tracer
+# Ray Tracer in Delphi
 
 ![ Delphi Support ](https://img.shields.io/badge/Delphi%20Support-%20XE5-blueviolet.svg)
 
