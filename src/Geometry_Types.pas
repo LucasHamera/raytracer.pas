@@ -2,6 +2,13 @@ unit Geometry_Types;
 
 interface
 
+uses
+  Utils_Types,
+  System.Generics.Collections;
+
+const
+  MaxTReal = 340282346638528859811704183484516925440.0;
+
 type
   TReal = Single;
 
@@ -65,49 +72,101 @@ type
 
   TRay = record
   strict private
-    fPos: TVec3;
-    fForward: TVec3;
+    fStart: TVec3;
+    fDir: TVec3;
 
   public
-    constructor Create(const lPos, lForward: TVec3);
+    constructor Create(const lStart, lDir: TVec3);
 
-    property Pos: TVec3 read fPos;
-    property Forward: TVec3 read fForward;
+    property Start: TVec3 read fStart;
+    property Dir: TVec3 read fDir;
   end;
 
   TLigth = record
   strict private
     fPos: TVec3;
-    fCol: TVec3;
+    fCol: TColor;
 
   public
-    constructor Create(const lPos, lCol: TVec3);
+    constructor Create(const lPos: TVec3; const lCol: TColor);
 
     property Pos: TVec3 read fPos;
-    property Col: TVec3 read fCol;
+    property Col: TColor read fCol;
   end;
 
-  TSurface = record
-  type
-    TDiffuseFunc = reference to function(const lVector: TVec3): TColor;
-    TSpecularFunc = reference to function(const lVector: TVec3): TColor;
-    TReflectDiffuseFunc = reference to function(const lVector: TVec3): TReal;
+  ISurface = interface
+  ['{5C7CD2DD-33D2-4DA6-9CBC-9CF9A2B78EBC}']
+    function Diffuse(const lPos: TVec3): TColor;
+    function Specular(const lPos: TVec3): TColor;
+    function Reflect(const lPos: TVec3): TReal;
+    function Roughness(): Integer;
+  end;
 
+  TShiny = class(TInterfacedObject, ISurface)
+  public
+    function Diffuse(const lPos: TVec3): TColor;
+    function Specular(const lPos: TVec3): TColor;
+    function Reflect(const lPos: TVec3): TReal;
+    function Roughness(): Integer;
+  end;
+
+  TCheckerboard = class(TInterfacedObject, ISurface)
+  public
+    function Diffuse(const lPos: TVec3): TColor;
+    function Specular(const lPos: TVec3): TColor;
+    function Reflect(const lPos: TVec3): TReal;
+    function Roughness(): Integer;
+  end;
+
+  TThing = class;
+
+  IScene = interface
+    ['{C74F236D-2B79-4B1A-B452-9F9AF90EB997}']
+    function GetThings(): TList<TThing>;
+    function GetLights(): TList<TLigth>;
+    function GetCamera(): TCamera;
+  end;
+
+  IHitable = interface
+    ['{2FBFBFC3-FA85-4160-8CB6-673E7A20283D}']
+
+  end;
+
+  TIntersection = record
   strict private
-    fDiffuse: TDiffuseFunc;
-    fSpecular: TSpecularFunc;
-    fReflect: TReflectDiffuseFunc;
-    fRoughness: Integer;
+    fThing: TThing;
+    fRay: TRay;
+    fDist: TReal;
 
   public
-    constructor Create(const lDiffuse: TDiffuseFunc; const lSpecular: TSpecularFunc;
-                       const lReflect: TReflectDiffuseFunc; const lRoughness: Integer);
+    constructor Create(const lThing: TThing; const lRay: TRay; const lDist: TReal);
 
-    property Diffuse: TDiffuseFunc read fDiffuse;
-    property Specular: TSpecularFunc read fSpecular;
-    property Reflect: TReflectDiffuseFunc read fReflect;
-    property Roughness: Integer read fRoughness;
+    property Thing: TThing read fThing;
+    property Ray: TRay read fRay;
+    property Dist: TReal read fDist;
   end;
+
+  TThing = class abstract
+    function Intersect(const lRay: TRay; const lScene: IScene) : TOptional<TIntersection>; virtual; abstract;
+    function Normal(const lPos: TVec3): TVec3; virtual; abstract;
+    function Surface(): ISurface; virtual; abstract;
+  end;
+
+  TArrayOfByte = array of Byte;
+
+  TDynamicCanvas = class
+  strict private
+    fWidth: Integer;
+    fHeight: Integer;
+    fBuffer: TArrayOfByte;
+
+  public
+    constructor Create(const lWidth: Integer;const lHeight: Integer);
+
+    procedure SetPixel(const lX, lY: Integer; const lColor: TColor);
+    function GetPixels(): TArrayOfByte;
+  end;
+
 
 implementation
 
@@ -198,27 +257,100 @@ end;
 
 { TRay }
 
-constructor TRay.Create(const lPos, lForward: TVec3);
+constructor TRay.Create(const lStart, lDir: TVec3);
 begin
-  fPos := lPos;
-  fForward := lForward;
+  fStart := lStart;
+  fDir := lDir;
 end;
 
 { TLigth }
 
-constructor TLigth.Create(const lPos, lCol: TVec3);
+constructor TLigth.Create(const lPos: TVec3; const lCol: TColor);
 begin
   fPos := lPos;
   fCol := lCol;
 end;
 
-constructor TSurface.Create(const lDiffuse: TDiffuseFunc; const lSpecular: TSpecularFunc;
-                   const lReflect: TReflectDiffuseFunc; const lRoughness: Integer);
+{ TShiny }
+
+function TShiny.Diffuse(const lPos: TVec3): TColor;
 begin
-  fDiffuse := lDiffuse;
-  fSpecular := lSpecular;
-  fReflect := lReflect;
-  fRoughness := lRoughness;
+  Result := TColor.White;
+end;
+
+function TShiny.Specular(const lPos: TVec3): TColor;
+begin
+  Result := TColor.Grey;
+end;
+
+function TShiny.Reflect(const lPos: TVec3): TReal;
+begin
+  Result := 0.7;
+end;
+
+function TShiny.Roughness(): Integer;
+begin
+  Result := 250;
+end;
+
+{ TCheckerboard }
+
+function TCheckerboard.Diffuse(const lPos: TVec3): TColor;
+begin
+  if ((Round(Floor(lPos.Z) + Floor(lPos.X)) mod 2) <> 0) then
+  begin
+    Exit(TColor.White);
+  end;
+  Exit(TColor.Black);
+end;
+
+function TCheckerboard.Specular(const lPos: TVec3): TColor;
+begin
+  Result := TColor.White;
+end;
+
+function TCheckerboard.Reflect(const lPos: TVec3): TReal;
+begin
+  if ((Round(Floor(lPos.Z) + Floor(lPos.X)) mod 2) <> 0) then
+  begin
+    Exit(0.1);
+  end;
+  Exit(0.7);
+end;
+
+function TCheckerboard.Roughness(): Integer;
+begin
+  Result := 150;
+end;
+
+{ TIntersection }
+
+constructor TIntersection.Create(const lThing: TThing; const lRay: TRay; const lDist: TReal);
+begin
+  fThing := lThing;
+  fRay := lRay;
+  fDist := lDist;
+end;
+
+{ TDynamicCanvas }
+
+constructor TDynamicCanvas.Create(const lWidth: Integer;const lHeight: Integer);
+begin
+  fWidth := lWidth;
+  fHeight := lHeight;
+  SetLength(fBuffer, 3 * lWidth * lHeight);
+end;
+
+procedure TDynamicCanvas.SetPixel(const lX, lY: Integer; const lColor: TColor);
+begin
+  fBuffer[(lY * fWidth + lX) * 3 + 0] := Round(Clamp(lColor.R, 0.0, 1.0) * 255.0);
+  fBuffer[(lY * fWidth + lX) * 3 + 1] := Round(Clamp(lColor.G, 0.0, 1.0) * 255.0);
+  fBuffer[(lY * fWidth + lX) * 3 + 2] := Round(Clamp(lColor.B, 0.0, 1.0) * 255.0);
+end;
+
+function TDynamicCanvas.GetPixels(): TArrayOfByte;
+begin
+  Result := fBuffer;
 end;
 
 end.
