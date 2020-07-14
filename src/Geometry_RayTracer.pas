@@ -102,6 +102,7 @@ var
   lInter: TOptional<TIntersection>;
 
 begin
+  Result.Clear();
   lClosestDist := MaxTReal;
 
   lThings := lScene.GetThings;
@@ -227,6 +228,7 @@ var
   lIsect: TOptional<TIntersection>;
 
 begin
+  Result.Clear();
   lIsect := Intersections(lRay, lScene);
   if (lIsect.HasValue) then
   begin

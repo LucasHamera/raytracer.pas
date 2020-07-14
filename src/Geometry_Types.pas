@@ -165,6 +165,9 @@ type
 
     procedure SetPixel(const lX, lY: Integer; const lColor: TColor);
     function GetPixels(): TArrayOfByte;
+
+    property Width: Integer read fWidth;
+    property Height: Integer read fHeight;
   end;
 
   TPlane = class(TThing)
@@ -395,6 +398,7 @@ var
   lDist: TReal;
 
 begin
+  Result.Clear();
   lDenom := Dot(fNorm, lRay.Dir);
   if (lDenom > 0.0) then
   begin
@@ -434,6 +438,7 @@ var
   lDisc: TReal;
 
 begin
+  Result.Clear();
   lEo := fCentre - lRay.Start;
   lV := Dot(lEo, lRay.Dir);
   lDist := 0.0;

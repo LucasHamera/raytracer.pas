@@ -90,7 +90,7 @@ end;
 
 function Norm(const lVector: TVec3): TVec3;
 begin
-  Result := (1.0 * Mag(lVector)) * lVector;
+  Result := (1.0 / Mag(lVector)) * lVector;
 end;
 
 function Cross(const lLeft, lRight: TVec3): TVec3;
