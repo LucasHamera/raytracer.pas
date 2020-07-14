@@ -1,9 +1,9 @@
-unit Geometry_Methods;
+unit Geometry.Methods;
 
 interface
 
 uses
-  Geometry_Types;
+  Geometry.Types;
 
   function Sqrt(const lVar: TReal): TReal;
   function Pow(const lBase: TReal; lExp: Integer): TReal;

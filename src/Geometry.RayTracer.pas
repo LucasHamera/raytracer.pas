@@ -1,11 +1,11 @@
-unit Geometry_RayTracer;
+unit Geometry.RayTracer;
 
 interface
 
 uses
-  Utils_Types,
-  Geometry_Types,
-  Geometry_Methods;
+  Utils.Types,
+  Geometry.Types,
+  Geometry.Methods;
 
 type
   TRayTracer = class

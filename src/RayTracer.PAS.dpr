@@ -7,16 +7,16 @@ program RayTracer.PAS;
 uses
   {$IFNDEF DEBUG}
   FastMM4,
-  {$ENDIF}
+  {$ENDIF }
   Windows,
   Vcl.Graphics,
   System.SysUtils,
-  Geometry_Types in 'Geometry_Types.pas',
-  Geometry_Methods in 'Geometry_Methods.pas',
-  Utils_Types in 'Utils_Types.pas',
-  Geometry_RayTracer in 'Geometry_RayTracer.pas',
-  Scene_Code in 'Scene_Code.pas',
-  Utils_Methods in 'Utils_Methods.pas';
+  Geometry.Types in 'Geometry.Types.pas',
+  Geometry.Methods in 'Geometry.Methods.pas',
+  Utils.Types in 'Utils.Types.pas',
+  Geometry.RayTracer in 'Geometry.RayTracer.pas',
+  Scene in 'Scene.pas',
+  Utils.Methods in 'Utils.Methods.pas';
 
 const
   WIDTH = 512;

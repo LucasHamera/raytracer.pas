@@ -1,9 +1,9 @@
-unit Geometry_Types;
+unit Geometry.Types;
 
 interface
 
 uses
-  Utils_Types,
+  Utils.Types,
   System.Generics.Collections;
 
 const
@@ -201,7 +201,7 @@ type
 implementation
 
 uses
-  Geometry_Methods;
+  Geometry.Methods;
 
 { TVec3 }
 

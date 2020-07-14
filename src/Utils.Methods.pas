@@ -1,11 +1,11 @@
-unit Utils_Methods;
+unit Utils.Methods;
 
 interface
 
 uses
-  Utils_Types,
+  Utils.Types,
   Vcl.Graphics,
-  Geometry_Types;
+  Geometry.Types;
 
   procedure CanvasToBitmap(const lCanvas: TDynamicCanvas; var lImage: TBitmap);
 

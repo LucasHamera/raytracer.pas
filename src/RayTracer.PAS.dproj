@@ -107,12 +107,12 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Geometry_Types.pas"/>
-        <DCCReference Include="Geometry_Methods.pas"/>
-        <DCCReference Include="Utils_Types.pas"/>
-        <DCCReference Include="Geometry_RayTracer.pas"/>
-        <DCCReference Include="Scene_Code.pas"/>
-        <DCCReference Include="Utils_Methods.pas"/>
+        <DCCReference Include="Geometry.Types.pas"/>
+        <DCCReference Include="Geometry.Methods.pas"/>
+        <DCCReference Include="Utils.Types.pas"/>
+        <DCCReference Include="Geometry.RayTracer.pas"/>
+        <DCCReference Include="Scene.pas"/>
+        <DCCReference Include="Utils.Methods.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

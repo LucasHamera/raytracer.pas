@@ -1,9 +1,9 @@
-unit Scene_Code;
+unit Scene;
 
 interface
 
 uses
-  Geometry_Types,
+  Geometry.Types,
   System.Generics.Collections;
 
 type
