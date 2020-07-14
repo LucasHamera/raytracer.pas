@@ -87,6 +87,28 @@ type
     property Col: TVec3 read fCol;
   end;
 
+  TSurface = record
+  type
+    TDiffuseFunc = reference to function(const lVector: TVec3): TColor;
+    TSpecularFunc = reference to function(const lVector: TVec3): TColor;
+    TReflectDiffuseFunc = reference to function(const lVector: TVec3): TReal;
+
+  strict private
+    fDiffuse: TDiffuseFunc;
+    fSpecular: TSpecularFunc;
+    fReflect: TReflectDiffuseFunc;
+    fRoughness: Integer;
+
+  public
+    constructor Create(const lDiffuse: TDiffuseFunc; const lSpecular: TSpecularFunc;
+                       const lReflect: TReflectDiffuseFunc; const lRoughness: Integer);
+
+    property Diffuse: TDiffuseFunc read fDiffuse;
+    property Specular: TSpecularFunc read fSpecular;
+    property Reflect: TReflectDiffuseFunc read fReflect;
+    property Roughness: Integer read fRoughness;
+  end;
+
 implementation
 
 uses
@@ -188,6 +210,15 @@ constructor TLigth.Create(const lPos, lCol: TVec3);
 begin
   fPos := lPos;
   fCol := lCol;
+end;
+
+constructor TSurface.Create(const lDiffuse: TDiffuseFunc; const lSpecular: TSpecularFunc;
+                   const lReflect: TReflectDiffuseFunc; const lRoughness: Integer);
+begin
+  fDiffuse := lDiffuse;
+  fSpecular := lSpecular;
+  fReflect := lReflect;
+  fRoughness := lRoughness;
 end;
 
 end.
