@@ -127,11 +127,6 @@ type
     function GetCamera(): TCamera;
   end;
 
-  IHitable = interface
-    ['{2FBFBFC3-FA85-4160-8CB6-673E7A20283D}']
-
-  end;
-
   TIntersection = record
   strict private
     fThing: TThing;
