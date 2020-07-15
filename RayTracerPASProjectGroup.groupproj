@@ -3,7 +3,7 @@
         <ProjectGuid>{6DC5BCB2-D12F-49FB-8F1B-8E038E8F6099}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="src\RayTracer.PAS.dproj">
+        <Projects Include="src\RayTracer.PAS.Console\RayTracer.PAS.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -15,13 +15,13 @@
         </BorlandProject>
     </ProjectExtensions>
     <Target Name="RayTracer_PAS">
-        <MSBuild Projects="src\RayTracer.PAS.dproj"/>
+        <MSBuild Projects="src\RayTracer.PAS.Console\RayTracer.PAS.dproj"/>
     </Target>
     <Target Name="RayTracer_PAS:Clean">
-        <MSBuild Projects="src\RayTracer.PAS.dproj" Targets="Clean"/>
+        <MSBuild Projects="src\RayTracer.PAS.Console\RayTracer.PAS.dproj" Targets="Clean"/>
     </Target>
     <Target Name="RayTracer_PAS:Make">
-        <MSBuild Projects="src\RayTracer.PAS.dproj" Targets="Make"/>
+        <MSBuild Projects="src\RayTracer.PAS.Console\RayTracer.PAS.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
         <CallTarget Targets="RayTracer_PAS"/>
