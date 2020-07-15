@@ -6,6 +6,9 @@
         <Projects Include="src\RayTracer.PAS.Console\RayTracer.PAS.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="src\RayTracer.PAS.Intrinsics\RayTracer.PAS.Intrinsics.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
     <Target Name="RayTracer_PAS:Make">
         <MSBuild Projects="src\RayTracer.PAS.Console\RayTracer.PAS.dproj" Targets="Make"/>
     </Target>
+    <Target Name="RayTracer_PAS_Intrinsics">
+        <MSBuild Projects="src\RayTracer.PAS.Intrinsics\RayTracer.PAS.Intrinsics.dproj"/>
+    </Target>
+    <Target Name="RayTracer_PAS_Intrinsics:Clean">
+        <MSBuild Projects="src\RayTracer.PAS.Intrinsics\RayTracer.PAS.Intrinsics.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="RayTracer_PAS_Intrinsics:Make">
+        <MSBuild Projects="src\RayTracer.PAS.Intrinsics\RayTracer.PAS.Intrinsics.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="RayTracer_PAS"/>
+        <CallTarget Targets="RayTracer_PAS;RayTracer_PAS_Intrinsics"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="RayTracer_PAS:Clean"/>
+        <CallTarget Targets="RayTracer_PAS:Clean;RayTracer_PAS_Intrinsics:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="RayTracer_PAS:Make"/>
+        <CallTarget Targets="RayTracer_PAS:Make;RayTracer_PAS_Intrinsics:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
