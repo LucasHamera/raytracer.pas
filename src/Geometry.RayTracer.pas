@@ -46,18 +46,15 @@ var
 begin
   Y := 0;
 
-  while (Y < lHeight)  do
+  for Y := 0 to lHeight - 1 do
   begin
-    X := 0;
-    while (X < lWidth) do
+    for X := 0 to lHeight - 1 do
     begin
       lPoint := Point(lWidth, lHeight, X, Y, lScene.GetCamera());
       lRay := TRay.Create(lScene.GetCamera().Pos, lPoint);
       lColor := TraceRay(lRay, lScene, 0);
       lCanvas.SetPixel(X, Y, lColor);
-      Inc(X);
     end;
-    Inc(Y);
   end;
 end;
 
