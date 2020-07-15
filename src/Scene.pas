@@ -38,6 +38,8 @@ end;
 destructor TMyScene.Destroy();
 begin
   ClearLists();
+  fThings.Free;
+  fLights.Free;
 end;
 
 function TMyScene.GetThings(): TList<TThing>;
