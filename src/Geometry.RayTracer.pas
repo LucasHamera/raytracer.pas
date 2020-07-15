@@ -17,8 +17,8 @@ type
     function Intersections(const lRay: TRay; const lScene: IScene): TOptional<TIntersection>;
     function Shade(const lIntersection: TIntersection; const lScene: IScene; const lDepth: Integer): TColor;
 
-    function NaturalColor(const lThing: TThing; const lPos, lNorm, lRd: TVec3; lScene: IScene): TColor;
-    function ReflectionColor(const lThing: TThing; const lPos, lNorm, lRd: TVec3; lScene: IScene; const lDepth: Integer): TColor;
+    function NaturalColor(const lThing: TThing; const lPos, lNorm, lRd: TVec3; const lScene: IScene): TColor;
+    function ReflectionColor(const lThing: TThing; const lPos, lNorm, lRd: TVec3; const lScene: IScene; const lDepth: Integer): TColor;
 
     function AddLight(const lThing: TThing; const lPos, lNormal, lRd: TVec3; const lScene: IScene;
       const lColor: TColor; const lLight: TLigth): TColor;
@@ -143,7 +143,7 @@ begin
   Result := lNaturalColor + lReflectedColor;
   end;
 
-function TRayTracer.NaturalColor(const lThing: TThing; const lPos, lNorm, lRd: TVec3; lScene: IScene): TColor;
+function TRayTracer.NaturalColor(const lThing: TThing; const lPos, lNorm, lRd: TVec3; const lScene: IScene): TColor;
 var
   lLigths: TList<TLigth>;
   lLigthIndex: Integer;
@@ -159,7 +159,7 @@ begin
   end;
 end;
 
-function TRayTracer.ReflectionColor(const lThing: TThing; const lPos, lNorm, lRd: TVec3; lScene: IScene;
+function TRayTracer.ReflectionColor(const lThing: TThing; const lPos, lNorm, lRd: TVec3; const lScene: IScene;
   const lDepth: Integer): TColor;
 var
   lRay: TRay;
