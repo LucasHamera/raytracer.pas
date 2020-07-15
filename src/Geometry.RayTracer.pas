@@ -44,8 +44,6 @@ var
   lColor: TColor;
 
 begin
-  Y := 0;
-
   for Y := 0 to lHeight - 1 do
   begin
     for X := 0 to lWidth - 1 do
