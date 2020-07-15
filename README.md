@@ -4,7 +4,7 @@
 
 ![compile time render](docs/render.bmp)
 
-Version 2048 x 2048 is in the docs folder
+Version 2048 x 2048 is in the docs folder.
 
 ## Introduction ##
 
