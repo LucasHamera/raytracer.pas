@@ -27,7 +27,7 @@ type
     rgbtRed: Byte;
   end;
   PRGBTripleArray = ^TRGBTripleArray;
-  TRGBTripleArray = array[0..4095] of TRGBTriple;
+  TRGBTripleArray = array[0..(High(Integer) div SizeOf(TRGBTriple) - 1)] of TRGBTriple;
 
 
 implementation
