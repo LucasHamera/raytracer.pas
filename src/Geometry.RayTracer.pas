@@ -48,7 +48,7 @@ begin
 
   for Y := 0 to lHeight - 1 do
   begin
-    for X := 0 to lHeight - 1 do
+    for X := 0 to lWidth - 1 do
     begin
       lPoint := Point(lWidth, lHeight, X, Y, lScene.GetCamera());
       lRay := TRay.Create(lScene.GetCamera().Pos, lPoint);
