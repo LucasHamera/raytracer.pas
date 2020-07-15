@@ -44,7 +44,7 @@ begin
     try
       CanvasToBitmap(lCanvas, lBitmap);
 
-      lBitmap.SaveToFile('out.bmp');
+      lBitmap.SaveToFile('render.bmp');
     finally
       lBitmap.Free;
     end;
