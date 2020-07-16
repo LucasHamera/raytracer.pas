@@ -55,12 +55,13 @@ end;
 
 function Floor(const lVal: TReal): TReal;
 begin
+  Result := Round(lVal);
   if (lVal >= 0.0) then
   begin
-    Exit(lVal);
+    Exit;
   end;
 
-  Result := lVal - 1;
+  Result := Result - 1.0;
 end;
 
 function Clamp(const lVal: TReal; const lMin: TReal; const lMax: TReal): TReal;
